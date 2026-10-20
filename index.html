@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صَدَقَةٌ جَارِيَةٌ</title>
+
+  <!-- الأيقونات والخطوط الخارجية -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- ملف التنسيقات الخارجي -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- الحاوية الرئيسية للتطبيق -->
+  <div class="container">
+
+    <!-- نص الإهداء والترحم -->
+    <div class="card-header-title">
+      إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ<br>
+      اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ، وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ، وَاغْسِلْهُ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ، وَنَقِّهِ مِنَ الذُّنُوبِ وَالْخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الأَبْيَضُ مِنَ الدَّنَسِ، وَأَبْدِلْهُ دَاراً خَيْراً مِنْ دَارِهِ، وَأَهْلاً خَيْراً مِنْ أَهْلِهِ، وَاجْعَلْ قَبْرَهُ رَوْضَةً مِنْ رِيَاضِ الْجَنَّةِ، وَأَدْخِلْهُ الْجَنَّةَ بِغَيْرِ حِسَابٍ وَلا سَابِقَةِ عَذَابٍ.<br><br>
+      صَدَقَةٌ جَارِيَةٌ لِرُوح الْمَرْحُوم الشَّيْخ جُنَيْد فَارِس نَجَّار
+    </div>  
+
+    <!-- العنوان العلوي -->
+    <div class="header-text">الأذكار</div>
+
+    <!-- قائمة اختيار الذكر المنسدلة -->
+    <div class="select-container">
+      <select id="dhikrSelect" onchange="changeDhikr()">
+        <!-- يتم تعبئة الخيارات برمجياً عبر الجافاسكريبت -->
+      </select>
+    </div>
+
+    <!-- العداد الوسطي التراكمي -->
+    <div class="dhikr-info-counter">
+      <span id="dhikrNameLabel">سُبْحَانَ اللَّهِ</span>
+      <div class="dhikr-total-badge">
+        إجمالي التسبيح لهذا الذكر: <strong id="dhikrAccumulatedTotal">0</strong>
+      </div>
+    </div>
+
+    <!-- حاوية العناصر العلوية اليسرى (زر القائمة + زر المشاركة) -->
+    <div class="top-left-tools">
+      <!-- زر المشاركة المباشر -->
+      <div class="share-btn" id="shareBtn" onclick="openTabModal(4, event)" title="مشاركة التطبيق">
+        <i class="fa-solid fa-share-nodes"></i>
+      </div>
+      <!-- زر القائمة الجانبية -->
+      <div class="menu-btn" id="menuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- القائمة الجانبية المنسدلة -->
+    <div class="side-menu" id="sideMenu">
+      <ul>
+        <li><a href="javascript:void(0)" onclick="openTabModal(1, event)">فضل الذكر والدعاء</a></li>
+        <li><a href="javascript:void(0)" onclick="openTabModal(2, event)">أوقات مستحبة للذكر</a></li>
+        <li><a href="javascript:void(0)" onclick="openTabModal(3, event)">عن التطبيق</a></li>
+        <li><a href="javascript:void(0)" onclick="openTabModal(4, event)">مشاركة الأجر</a></li>
+      </ul>
+    </div>
+
+    <!-- دائرة العد التفاعلية -->
+    <div class="counter-circle-container" onclick="increment()">
+      <div class="counter-content"></div>
+      
+      <svg class="progress-ring" width="240" height="240" viewBox="0 0 240 240">
+        <!-- دائرة الخلفية -->
+        <circle class="progress-ring__circle-bg" stroke="#e6ede8" stroke-width="8" fill="transparent" r="105" cx="120" cy="120"/>
+        <!-- دائرة التقدم -->
+        <circle id="progressCircle" class="progress-ring__circle" stroke="#1f3324" stroke-width="8" fill="transparent" r="105" cx="120" cy="120"/>
+      </svg>
+
+      <!-- الأرقام داخل الدائرة -->
+      <div class="counter-text">
+        <span id="targetCount">0</span>
+        <span class="divider">/</span>
+        <span id="currentCount">0</span>
+        <span class="label-small">الأذكار</span>
+        
+        <!-- أيقونة المسبحة -->
+        <svg class="rosary-custom-icon" viewBox="0 0 64 90" width="30" height="36" fill="#2d6a4f" stroke="#2d6a4f" stroke-width="2">
+          <circle cx="32" cy="8" r="4"/>
+          <circle cx="44" cy="11" r="4"/>
+          <circle cx="53" cy="20" r="4"/>
+          <circle cx="56" cy="32" r="4"/>
+          <circle cx="53" cy="44" r="4"/>
+          <circle cx="44" cy="53" r="4"/>
+          <circle cx="32" cy="56" r="4"/>
+          <circle cx="20" cy="53" r="4"/>
+          <circle cx="11" cy="44" r="4"/>
+          <circle cx="8" cy="32" r="4"/>
+          <circle cx="11" cy="20" r="4"/>
+          <circle cx="20" cy="11" r="4"/>
+          <circle cx="32" cy="63" r="4.5" fill="#2d6a4f" stroke="#2d6a4f" stroke-width="2"/>
+          <path d="M28 69 C28 67 36 67 36 69 L35 78 C35 79 29 79 29 78 Z" fill="#2d6a4f" stroke="#2d6a4f" stroke-width="1.5"/>
+          <path d="M30 78 L29 84 M32 78 L32 85 M34 78 L35 84" stroke="#2d6a4f" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- أزرار التحكم -->
+    <div class="controls-row">
+      <button class="btn-next" onclick="nextDhikr()">الذكر التالي ←</button>
+      <button class="btn-reset" onclick="resetCount()">إعادة ضبط ↺</button>
+    </div>
+
+    <!-- شبكة الإحصائيات -->
+    <div class="stats-grid">
+      <!-- 1. إجمالي الذكر -->
+      <div class="stat-box">
+        <svg class="rosary-custom-icon" viewBox="0 0 64 90" width="30" height="36" fill="#2d6a4f" stroke="#2d6a4f" stroke-width="2">
+          <circle cx="32" cy="8" r="4"/>
+          <circle cx="44" cy="11" r="4"/>
+          <circle cx="53" cy="20" r="4"/>
+          <circle cx="56" cy="32" r="4"/>
+          <circle cx="53" cy="44" r="4"/>
+          <circle cx="44" cy="53" r="4"/>
+          <circle cx="32" cy="56" r="4"/>
+          <circle cx="20" cy="53" r="4"/>
+          <circle cx="11" cy="44" r="4"/>
+          <circle cx="8" cy="32" r="4"/>
+          <circle cx="11" cy="20" r="4"/>
+          <circle cx="20" cy="11" r="4"/>
+          <circle cx="32" cy="63" r="4.5" fill="#2d6a4f" stroke="#2d6a4f" stroke-width="2"/>
+          <path d="M28 69 C28 67 36 67 36 69 L35 78 C35 79 29 79 29 78 Z" fill="#2d6a4f" stroke="#2d6a4f" stroke-width="1.5"/>
+          <path d="M30 78 L29 84 M32 78 L32 85 M34 78 L35 84" stroke="#2d6a4f" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="stat-value" id="statTotal">0</span>
+        <span class="stat-label">إجمالي الذكر</span>
+      </div>
+
+      <!-- 2. الذاكرون -->
+      <div class="stat-box">
+        <i class="fa-solid fa-users users-icon"></i>
+        <span class="stat-value" id="statUsers">0</span>
+        <span class="stat-label">الذاكرون</span>
+      </div>
+
+      <!-- 3. هذا الأسبوع -->
+      <div class="stat-box">
+        <i class="fa-solid fa-chart-simple"></i>
+        <span class="stat-value" id="statWeek">0</span>
+        <span class="stat-label">هذا الأسبوع</span>
+      </div>
+
+      <!-- 4. اليوم -->
+      <div class="stat-box">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span class="stat-value" id="statToday">0</span>
+        <span class="stat-label">اليوم</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- نافذة عرض محتوى التبويب المنبثقة (مفردة) -->
+  <div id="tabModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:15px; width:90%; max-width:400px; text-align:right; position:relative; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
+      <span onclick="closeTabModal()" style="position:absolute; left:15px; top:10px; cursor:pointer; font-size:22px; font-weight:bold; color:#888;">✕</span>
+      <h3 id="tabModalTitle" style="color:#1f3325; margin-top:0;">عنوان التبويب</h3>
+      <p id="tabModalBody" style="color:#4a574e; line-height:1.6;">نص المحتوى...</p>
+    </div>
+  </div>
+
+  <!-- مكتبة Supabase وملف الجافاسكريبت البرمجي -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
