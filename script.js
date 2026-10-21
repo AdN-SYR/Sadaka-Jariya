@@ -4,7 +4,7 @@ const SUPABASE_ANON_KEY = 'sb_publishable_zoi9hXqIvG9bBPMyd37Vig_UjCKvu1F';
 
 let db = null;
 try {
-  if (typeof supabase !== 'undefined' && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('sb_publishable_zoi9hXqIvG9bBPMyd37Vig_UjCKvu1F'')) {
+  if (typeof supabase !== 'undefined' && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('sb_publishable_zoi9hXqIvG9bBPMyd37Vig_UjCKvu1F') {
     db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 } catch (e) {
