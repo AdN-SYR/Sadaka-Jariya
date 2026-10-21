@@ -415,11 +415,18 @@ ul:not(.side-menu ul) {
     height: 240px !important;
   }
 
-  .progress-ring__circle-bg,
-  .progress-ring__circle {
-    cx: 120 !important;
-    cy: 120 !important;
-    r: 105 !important;
-    stroke-dasharray: 659 !important;
-  }
+  /* 1. دائرة الخلفية الرمادية (تغيير لون الخط هنا) */
+.progress-ring__circle-bg {
+  stroke: #c2cfc7 !important; /* اختر اللون الذي يعجبك هنا */
+  cx: 120 !important;
+  cy: 120 !important;
+  r: 105 !important;
+}
+
+/* 2. دائرة التقدم الخضراء */
+.progress-ring__circle {
+  cx: 120 !important;
+  cy: 120 !important;
+  r: 105 !important;
+  stroke-dasharray: 659 !important;
 }
