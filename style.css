@@ -508,5 +508,21 @@ ul:not(.side-menu ul) {
   color: #909893 !important;
   direction: rtl !important;
 }
+/* 1. إرجاع عرض الكارت واسعاً ومتناسقاً كما كان */
+.container {
+  width: 95% !important;
+  max-width: 1000px !important;
+  min-height: auto !important;
+  padding: 24px 16px !important;
+  margin: 15px auto !important;
+}
 
+/* 2. ضبط العرض على الهواتف لتأخذ كامل عرض الشاشة المريح */
+@media (max-width: 768px) {
+  .container {
+    width: 95% !important;
+    max-width: 100% !important;
+    padding: 16px 12px !important;
+  }
+}
 
