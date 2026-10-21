@@ -481,3 +481,46 @@ body {
     stroke-dasharray: 534 !important;
   }
 }
+
+
+/* ضبط سنترة نصوص الدائرة بدقة متناهية على الهواتف */
+@media (max-width: 768px) {
+  .counter-circle-container {
+    width: 200px !important;
+    height: 200px !important;
+    position: relative !important;
+  }
+
+  .counter-circle-container .counter-content {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* تعديل أحجام ومسافات الخط داخل دائرة الهاتف لتستقر في السنتر 100% */
+  #targetCount {
+    font-size: 1.1rem !important;
+  }
+
+  .counter-circle-container .counter-content .divider {
+    font-size: 0.8rem !important;
+    margin: -3px 0 !important;
+  }
+
+  #currentCount {
+    font-size: 2.2rem !important;
+    margin: 0 !important;
+  }
+
+  .label-small {
+    font-size: 0.75rem !important;
+  }
+}
