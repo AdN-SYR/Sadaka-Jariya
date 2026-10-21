@@ -67,16 +67,11 @@
     </div>
 
     <!-- دائرة العد التفاعلية -->
-    <div class="counter-circle-container" onclick="increment()">
-      <div class="counter-content"></div>
-      
-      <svg class="progress-ring" width="240" height="240" viewBox="0 0 240 240">
-        <!-- دائرة الخلفية -->
-        <circle class="progress-ring__circle-bg" stroke="#e6ede8" stroke-width="8" fill="transparent" r="105" cx="120" cy="120"/>
-        <!-- دائرة التقدم -->
-        <circle id="progressCircle" class="progress-ring__circle" stroke="#1f3324" stroke-width="8" fill="transparent" r="105" cx="120" cy="120"/>
-      </svg>
-
+    <<div class="counter-circle-container" onclick="increment()">
+  <svg class="progress-ring" width="240" height="240" viewBox="0 0 240 240">
+    <circle class="progress-ring__circle-bg" stroke="#e6ede8" stroke-width="8" fill="transparent" r="105" cx="120" cy="120"/>
+    <circle id="progressCircle" class="progress-ring__circle" stroke="#1f3324" stroke-width="8" fill="transparent" r="105" cx="120" cy="120"/>
+  </svg>
       <!-- الأرقام داخل الدائرة -->
       <div class="counter-content">
         <span id="targetCount">0</span>
