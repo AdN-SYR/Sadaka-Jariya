@@ -12,7 +12,6 @@ body {
   font-family: 'Cairo', sans-serif;
   color: #2c3e35;
 
-  /* تطبيق الخلفية على الصفحة بالكامل (الجدارية) */
   background-image: url('rrr.jpg');
   background-size: cover;
   background-position: center;
@@ -21,37 +20,35 @@ body {
 }
 
 /* =========================================================
-   2. الحاوية الرئيسية (Main Container & Cards)
+   2. الحاوية الرئيسية (إعادة العرض الواسع القديم)
    ========================================================= */
 .container {
   width: 95%;
-  max-width: 450px; /* جعل الحاوية بمظهر كارت الهاتف الأنيق في الحاسوب والهاتف */
-  min-height: auto;
-  margin: 20px auto;
+  max-width: 1000px; /* العرض الأقصى القديم الواسع */
+  min-height: 90vh;
+  background: #ffffff;
   border-radius: 28px;
-  box-shadow: 0 15px 35px rgba(31, 51, 36, 0.12);
-  padding: 24px 20px;
+  box-shadow: 0 15px 35px rgba(31, 51, 36, 0.08);
+  padding: 32px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
 
-  /* البطاقة الرئيسية - حصر الخلفية داخل حدودها */
   position: relative !important;
   overflow: hidden !important;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: #55716205;
   z-index: 1;
 }
 
-/* طبقة الخلفية الشفافة الممتدة داخل البطاقة */
 .container::before {
   content: "";
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
   width: 100%; height: 100%;
   background-image: url('kurse.jpg') !important;
-  background-size: cover !important;
+  background-size: 100% 100% !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
   opacity: 0.1;
@@ -59,7 +56,6 @@ body {
   pointer-events: none;
 }
 
-/* إبراز النصوص والأزرار فوق الصورة الشفافة */
 .container > * {
   position: relative;
   z-index: 2;
@@ -71,6 +67,225 @@ body {
   margin-bottom: 8px;
 }
 
+/* =========================================================
+   3. قائمة الاختيار (Dropdown Container & Select)
+   ========================================================= */
+.select-container select {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 4px 0;
+  border-radius: 14px;
+  border: 1px solid #dcdfdc;
+  background-color: #f9fbf9;
+  font-family: 'Cairo', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #181b19;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  max-height: 250px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* =========================================================
+   4. دائرة العداد (السنترة العمودية فقط)
+   ========================================================= */
+.counter-circle-container {
+  position: relative !important;
+  width: 240px;
+  height: 240px;
+  margin: 20px auto;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.progress-ring {
+  transform: rotate(-90deg) !important;
+  transform-origin: center !important;
+  width: 240px;
+  height: 240px;
+}
+
+.progress-ring__circle-bg,
+.progress-ring__circle {
+  cx: 120;
+  cy: 120;
+  r: 105;
+}
+
+.progress-ring__circle {
+  stroke-dasharray: 659 !important;
+  transition: stroke-dashoffset 0.35s ease;
+  stroke-linecap: round;
+}
+
+/* رص النصوص داخل الدائرة عمودياً وفي المنتصف */
+.counter-circle-container .counter-content {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  direction: ltr !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+.counter-circle-container .counter-content * {
+  position: static !important;
+  display: block !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 1px 0 !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+}
+
+#targetCount {
+  font-size: 1.2rem !important;
+  color: #707a73 !important;
+  font-weight: 500 !important;
+}
+
+.counter-circle-container .counter-content .divider {
+  font-size: 0.9rem !important;
+  color: #a0a8a3 !important;
+  margin: -2px 0 !important;
+}
+
+#currentCount {
+  font-size: 2.6rem !important;
+  font-weight: bold !important;
+  color: #095714 !important;
+  margin: 2px 0 !important;
+}
+
+.label-small {
+  font-size: 0.85rem !important;
+  color: #909893 !important;
+  direction: rtl !important;
+}
+
+.icon-small {
+  font-size: 0.9rem !important;
+  margin-top: 2px !important;
+}
+
+/* =========================================================
+   5. أزرار التحكم
+   ========================================================= */
+.controls-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px 0;
+}
+
+.btn-next {
+  flex: 2;
+  background-color: #1f3324;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-next:hover {
+  background-color: #2c4733;
+}
+
+.btn-reset {
+  flex: 1;
+  background-color: #f2f5f3;
+  color: #4a574e;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-reset:hover {
+  background-color: #e4ebe7;
+}
+
+/* =========================================================
+   6. شبكة الإحصائيات الأربعة
+   ========================================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  width: 100%;
+  max-width: 700px;
+  background-color: #f9fbf9;
+  padding: 18px 12px;
+  border-radius: 20px;
+  border: 1px solid #eaeede;
+  box-sizing: border-box;
+
+  background-image: url('ss.jpg');
+  background-size: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.8;
+}
+
+.stat-box {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-box i {
+  font-size: 20px;
+  color: #2d6a4f;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f3324;
+}
+
+.stat-label {
+  font-size: 16px;
+  color: #181b19;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   7. القوائم الجانبية والأدوات العلوية
+   ========================================================= */
 .card {
   position: relative;
   width: 100%;
@@ -94,254 +309,26 @@ body {
   margin-bottom: 15px;
 }
 
-/* =========================================================
-   3. قائمة الاختيار (Select Dropdown)
-   ========================================================= */
-.select-container select {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1px solid #dcdfdc;
-  background-color: #f9fbf9;
-  font-family: 'Cairo', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #181b19;
-  outline: none;
-  cursor: pointer;
-  text-align: center;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  max-height: 250px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-}
-
-/* =========================================================
-   4. كود الدائرة الكامل (SVG & Counter Content)
-   ========================================================= */
-.counter-circle-container {
-  position: relative !important;
-  width: 240px;
-  height: 240px;
-  margin: 20px auto;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.progress-ring {
-  transform: rotate(-90deg) !important;
-  transform-origin: center !important;
-  width: 240px;
-  height: 240px;
-}
-
-.progress-ring__circle-bg {
-  stroke: #e6ede8;
-  stroke-width: 8;
-  fill: transparent;
-}
-
-.progress-ring__circle {
-  stroke: #1f3324;
-  stroke-width: 8;
-  fill: transparent;
-  stroke-dasharray: 659 !important; /* محيط الدائرة (2 * π * 105) */
-  transition: stroke-dashoffset 0.35s ease;
-  stroke-linecap: round;
-}
-
-/* النصوص المترتبة عمودياً داخل الدائرة */
-.counter-circle-container .counter-content {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  direction: ltr !important; /* يمنع اتجاه المحاذاة العربي من إزاحة الأرقام أفقيًا */
-  width: 100% !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-}
-
-.counter-circle-container .counter-content * {
-  position: static !important;
-  display: block !important;
-  margin: 0 !important;
-  line-height: 1.15 !important;
-  text-align: center !important;
-}
-
-#targetCount {
-  font-size: 1.2rem !important;
-  color: #707a73 !important;
-  font-weight: 500 !important;
-}
-
-.counter-circle-container .counter-content .divider {
-  font-size: 0.9rem !important;
-  color: #a0a8a3 !important;
-  margin: -2px 0 !important;
-}
-
-#currentCount {
-  font-size: 2.6rem !important;
-  font-weight: bold !important;
-  color: #095714 !important;
-  margin: 2px 0 !important;
-}
-
-.label-small {
-  font-size: 0.85rem !important;
-  color: #909893 !important;
-  direction: rtl !important;
-}
-
-/* =========================================================
-   5. أزرار التحكم (Next & Reset Buttons)
-   ========================================================= */
-.controls-row {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 12px !important;
-  width: 100% !important;
-  max-width: 380px !important;
-  margin: 18px auto !important;
-}
-
-.btn-next {
-  flex: 2 !important;
-  background-color: #1f3324 !important;
-  color: #ffffff !important;
-  border: none !important;
-  padding: 13px !important;
-  border-radius: 14px !important;
-  font-family: 'Cairo', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: background 0.2s ease;
-}
-
-.btn-next:hover {
-  background-color: #2c4733 !important;
-}
-
-.btn-reset {
-  flex: 1 !important;
-  background-color: #f2f5f3 !important;
-  color: #4a574e !important;
-  border: none !important;
-  padding: 13px !important;
-  border-radius: 14px !important;
-  font-family: 'Cairo', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: background 0.2s ease;
-}
-
-.btn-reset:hover {
-  background-color: #e4ebe7 !important;
-}
-
-/* =========================================================
-   6. شبكة الإحصائيات الأربعة (Stats Grid)
-   ========================================================= */
-.stats-grid {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 10px !important;
-  width: 100% !important;
-  max-width: 400px !important;
-  margin: 15px auto !important;
-  background-color: #f9fbf9 !important;
-  padding: 14px 10px !important;
-  border-radius: 20px !important;
-  border: 1px solid #eaeede !important;
-  box-sizing: border-box !important;
-  background-image: url('ss.jpg');
-  background-size: cover;
-  background-position: center;
-}
-
-.stat-box {
-  text-align: center !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.stat-box i {
-  font-size: 18px !important;
-  color: #2d6a4f !important;
-  margin-bottom: 4px !important;
-}
-
-.stat-value {
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  color: #1f3324 !important;
-}
-
-.stat-label {
-  font-size: 13px !important;
-  color: #181b19 !important;
-  margin-top: 2px !important;
-}
-
-/* =========================================================
-   7. شريط التنقل والأدوات العلوية والقائمة الجانبية
-   ========================================================= */
-.top-left-tools {
+.menu-btn {
   position: absolute;
-  top: 20px;
+  top: 10px;
   left: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  z-index: 1000;
-}
-
-.top-left-tools .menu-btn {
-  position: relative;
-  width: 26px;
-  height: 20px;
+  width: 30px;
+  height: 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  z-index: 1000;
 }
 
-.top-left-tools .menu-btn span {
+.menu-btn span {
   display: block;
   height: 3px;
   width: 100%;
   background-color: #1f3325;
   border-radius: 3px;
-}
-
-.share-btn {
-  font-size: 20px;
-  color: #1f3325;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.share-btn:hover {
-  transform: scale(1.1);
+  transition: all 0.3s ease;
 }
 
 .side-menu {
@@ -364,9 +351,9 @@ body {
 }
 
 .side-menu ul {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .side-menu ul li a {
@@ -375,6 +362,11 @@ body {
   color: #1f3325;
   text-decoration: none;
   font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.side-menu ul li a:hover {
+  background-color: rgba(31, 51, 37, 0.08);
 }
 
 .dhikr-info-counter {
@@ -384,6 +376,7 @@ body {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(4px);
 }
 
 #dhikrNameLabel {
@@ -404,125 +397,87 @@ body {
   font-size: 1.1rem;
 }
 
-/* إخفاء القوائم غير المرغوبة التي قد تظهر عشوائياً */
-ul:not(.side-menu ul) {
-  list-style: none !important;
-  padding: 0 !important;
+.top-left-tools {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.top-left-tools .menu-btn {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.top-left-tools .menu-btn span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #1f3325;
+  border-radius: 3px;
+}
+
+.share-btn {
+  font-size: 20px;
+  color: #1f3325;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-btn:hover {
+  color: #2d6a4f;
+  transform: scale(1.1);
 }
 
 /* =========================================================
-   8. التجاوب مع الهواتف المحمولة (Responsive Design)
+   8. التجاوب مع الهواتف المحمولة (تغطية كاملة للشاشة)
    ========================================================= */
 @media (max-width: 768px) {
   body {
-    align-items: center;
-    background-attachment: scroll;
+    background: #ffffff;
+    align-items: stretch;
   }
 
   .container {
-    width: 92% !important;
-    max-width: 400px !important;
-    min-height: auto !important;
-    margin: 15px auto !important;
-    padding: 20px 14px !important;
-    border-radius:
-/* =========================================================
-   تنسيق الدائرة بالضبط كما في الصورة
-   ========================================================= */
-
-/* 1. حاوية الدائرة الرئيسية */
-.counter-circle-container {
-  position: relative !important;
-  width: 240px !important;
-  height: 240px !important;
-  margin: 20px auto !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* 2. رسمة الدائرة SVG وتدوير نقطة البداية للأعلى */
-.progress-ring {
-  transform: rotate(-90deg) !important;
-  transform-origin: center !important;
-  width: 240px !important;
-  height: 240px !important;
-}
-
-/* 3. حاوية النصوص وتمركزها المطلق في السنتر */
-.counter-circle-container .counter-content {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  direction: ltr !important; /* لضمان رص الأرقام رأسياً دون انحراف أفقياً */
-  width: auto !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-}
-
-/* 4. إلغاء أي تموضع قديم للعناصر الداخلية */
-.counter-circle-container .counter-content * {
-  position: static !important;
-  display: block !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  margin: 1px 0 !important;
-  line-height: 1.15 !important;
-  text-align: center !important;
-}
-
-/* 5. خطوط وحجم عناصر العداد داخل الدائرة */
-#targetCount {
-  font-size: 1.2rem !important;
-  color: #707a73 !important;
-  font-weight: 500 !important;
-}
-
-.counter-circle-container .counter-content .divider {
-  font-size: 0.9rem !important;
-  color: #a0a8a3 !important;
-  margin: -2px 0 !important;
-}
-
-#currentCount {
-  font-size: 2.6rem !important;
-  font-weight: bold !important;
-  color: #095714 !important;
-  margin: 2px 0 !important;
-}
-
-.label-small {
-  font-size: 0.85rem !important;
-  color: #909893 !important;
-  direction: rtl !important;
-}
-/* 1. إرجاع عرض الكارت واسعاً ومتناسقاً كما كان */
-.container {
-  width: 95% !important;
-  max-width: 1000px !important;
-  min-height: auto !important;
-  padding: 24px 16px !important;
-  margin: 15px auto !important;
-}
-
-/* 2. ضبط العرض على الهواتف لتأخذ كامل عرض الشاشة المريح */
-@media (max-width: 768px) {
-  .container {
-    width: 95% !important;
+    width: 100% !important;
     max-width: 100% !important;
-    padding: 16px 12px !important;
+    min-height: 100vh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 16px !important;
+  }
+
+  .counter-circle-container {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .progress-ring {
+    width: 200px;
+    height: 200px;
+  }
+
+  .progress-ring__circle-bg,
+  .progress-ring__circle {
+    cx: 100;
+    cy: 100;
+    r: 85;
+  }
+
+  .progress-ring__circle {
+    stroke-dasharray: 534 !important;
   }
 }
-
