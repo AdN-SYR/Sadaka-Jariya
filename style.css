@@ -139,23 +139,25 @@ body {
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
-  max-width: 200px !important; /* تقييد العرض لكي لا يخرج النص عن دائرة الـ 240px */
+  max-width: 180px !important; /* تقييد العرض لكي لا يخرج النص عن دائرة الـ 240px */
   box-sizing: border-box;
   pointer-events: none; /* لتجنب أي تقاطع في النقر فوق الدائرة */
+   margin: 0 !important;
+  padding: 0 !important;
 }
 
 
 
 /* الفاصل بين الرقم الحالي والمستهدف */
 .divider {
-  font-size: 16px;
-  color: #a0a8a3;
-  margin: 2px ;
+  font-size: 14px !important;
+  color: #a0a8a3  !important;
+  margin: 1px 0   !important;
 }
 
 /* الرقم المستهدف الوصول إليه */
 #targetCount {
-  font-size: 25px;
+  font-size: 20px;
   color: #707a73;
   font-weight: 0;
 }
