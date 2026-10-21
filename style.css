@@ -482,27 +482,3 @@ body {
   }
 }
 
-/* إصلاح سنترة الأرقام داخل دائرة الهاتف حصراً */
-@media (max-width: 768px) {
-  .counter-circle-container .counter-content {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -52%) !important; /* رفع التمركز قليلاً للـ 0 و25 للوسط */
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* إزالة أي فاصل علوي يُسقط الأرقام لتحت */
-  .counter-circle-container .counter-content * {
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1.1 !important;
-  }
-}
