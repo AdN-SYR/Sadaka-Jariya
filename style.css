@@ -4,69 +4,99 @@
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh; /* جعل ارتفاع الصفحة يغطي كامل الشاشة على الأقل */
-  background: linear-gradient(135deg, #f0f4f1 0%, #d8e2dc 100%); /* خلفية متدرجة ألوان هادئة */
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4f1 0%, #d8e2dc 100%);
   display: flex;
-  justify-content: center; /* محاذاة الحاوية في المنتصف أفقياً */
-  align-items: center;     /* محاذاة الحاوية في المنتصف رأسياً */
-  font-family: 'Cairo', sans-serif; /* خط القاهرة يدعم العربية بشكل ممتاز */
+  justify-content: center;
+  align-items: center;
+  font-family: 'Cairo', sans-serif;
   color: #2c3e35;
+
+  /* تطبيق الخلفية على الصفحة بالكامل (الجدارية) */
+  background-image: url('rrr.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* =========================================================
-   2. الحاوية الرئيسية (Main Container)
+   2. الحاوية الرئيسية (Main Container & Cards)
    ========================================================= */
-/* جعل الحاوية تتمدد وتملأ الشاشة مع حدود عريضة وأنيقة */
 .container {
   width: 95%;
-  max-width: 1000px; /* العرض الأقصى للحاوية على الشاشات الكبيرة */
-  min-height: 90vh;  /* تأخذ 90% من ارتفاع الشاشة */
-  background: #ffffff;
-  border-radius: 28px; /* حواف منحنية أنيقة */
-  box-shadow: 0 15px 35px rgba(31, 51, 36, 0.08); /* ظل ناعم للإيحاء بالارتفاع */
-  padding: 32px;
-  box-sizing: border-box; /* تضمين الـ padding ضمن حسابات العرض */
+  max-width: 450px; /* جعل الحاوية بمظهر كارت الهاتف الأنيق في الحاسوب والهاتف */
+  min-height: auto;
+  margin: 20px auto;
+  border-radius: 28px;
+  box-shadow: 0 15px 35px rgba(31, 51, 36, 0.12);
+  padding: 24px 20px;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;  /* ترتيب العناصر داخلها بشكل عمودي */
-  align-items: center;     /* توسيط العناصر أفقياً */
-  justify-content: space-around; /* توزيع المساحة رأسياً بين العناصر بالتساوي */
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  /* البطاقة الرئيسية - حصر الخلفية داخل حدودها */
+  position: relative !important;
+  overflow: hidden !important;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 1;
 }
 
-/* النص التوضيحي الهامشي في الأعلى */
+/* طبقة الخلفية الشفافة الممتدة داخل البطاقة */
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  width: 100%; height: 100%;
+  background-image: url('kurse.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  opacity: 0.1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* إبراز النصوص والأزرار فوق الصورة الشفافة */
+.container > * {
+  position: relative;
+  z-index: 2;
+}
+
 .header-text {
   font-size: 16px;
   color: #707a73;
   margin-bottom: 8px;
 }
 
-/* =========================================================
-   3. قائمة الاختيار (Dropdown Container & Select)
-   ========================================================= */
-
-
-   
-.select-container select {
+.card {
+  position: relative;
   width: 100%;
-  padding: 12px 16px;
-  margin: 4px 0;
-  border-radius: 14px;
-  border: 1px solid #ccc; /* أو اللون الذي تستخدمه للحدود */
-  
-  /* خصائص منع النط والتحديد */
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  cursor: pointer;
-  
-  /* خصائص التمرير */
-  max-height: 250px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
+  max-width: 450px;
+  background-color: #f4f1ea;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  margin: 20px auto;
 }
 
+.card-header-title {
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1f3325;
+  background-color: rgba(31, 51, 37, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 15px;
+}
 
-
-/* تنسيق قائمة الخيارات المنزلقة */
+/* =========================================================
+   3. قائمة الاختيار (Select Dropdown)
+   ========================================================= */
 .select-container select {
   width: 100%;
   padding: 12px 16px;
@@ -74,19 +104,23 @@ body {
   border: 1px solid #dcdfdc;
   background-color: #f9fbf9;
   font-family: 'Cairo', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #181b19;
-  outline: none; /* إزالة إطار التركيز عند النقر */
+  outline: none;
   cursor: pointer;
   text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  max-height: 250px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 /* =========================================================
-   كود الدائرة الكامل (جميع العناصر)
+   4. كود الدائرة الكامل (SVG & Counter Content)
    ========================================================= */
-
-/* 1. الحاوية الرئيسية للدائرة */
 .counter-circle-container {
   position: relative !important;
   width: 240px;
@@ -100,7 +134,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 2. ضبط رسمة الـ SVG وتدويرها لتبدأ التعبئة من الأعلى */
 .progress-ring {
   transform: rotate(-90deg) !important;
   transform-origin: center !important;
@@ -108,14 +141,12 @@ body {
   height: 240px;
 }
 
-/* 3. دائرة الخلفية الرمادية */
 .progress-ring__circle-bg {
   stroke: #e6ede8;
   stroke-width: 8;
   fill: transparent;
 }
 
-/* 4. دائرة التقدم الخضراء */
 .progress-ring__circle {
   stroke: #1f3324;
   stroke-width: 8;
@@ -125,7 +156,7 @@ body {
   stroke-linecap: round;
 }
 
-/* 5. الحاوية النصية في منتصف الدائرة (سنترة وترتيب عمودي) */
+/* النصوص المترتبة عمودياً داخل الدائرة */
 .counter-circle-container .counter-content {
   position: absolute !important;
   top: 50% !important;
@@ -136,7 +167,7 @@ body {
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
-  direction: ltr !important; /* لمنع الانزياح الأفقي للأرقام */
+  direction: ltr !important; /* يمنع اتجاه المحاذاة العربي من إزاحة الأرقام أفقيًا */
   width: 100% !important;
   height: auto !important;
   margin: 0 !important;
@@ -144,7 +175,6 @@ body {
   pointer-events: none;
 }
 
-/* 6. إلغاء التموضع الجانبي لكل عنصر داخل الدائرة */
 .counter-circle-container .counter-content * {
   position: static !important;
   display: block !important;
@@ -153,7 +183,6 @@ body {
   text-align: center !important;
 }
 
-/* 7. أحجام وخطوط العناصر داخل الدائرة */
 #targetCount {
   font-size: 1.2rem !important;
   color: #707a73 !important;
@@ -176,320 +205,145 @@ body {
 .label-small {
   font-size: 0.85rem !important;
   color: #909893 !important;
-  direction: rtl !important; /* لإظهار النص بالعربية الصحيحة */
+  direction: rtl !important;
 }
 
 /* =========================================================
-   6. أزرار التحكم (Next & Reset Buttons)
+   5. أزرار التحكم (Next & Reset Buttons)
    ========================================================= */
 .controls-row {
-  display: flex;
-  gap: 15px; /* مسافة بين الزرين */
-  width: 100%;
-  max-width: 500px;
-  margin: 20px 0;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  margin: 18px auto !important;
 }
 
-/* زر "التالي" أو الانتقال */
 .btn-next {
-  flex: 2; /* يمتلك ضعف مساحة زر إعادة الضبط */
-  background-color: #1f3324;
-  color: #ffffff;
-  border: none;
-  padding: 14px;
-  border-radius: 14px;
-  font-family: 'Cairo', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
+  flex: 2 !important;
+  background-color: #1f3324 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 13px !important;
+  border-radius: 14px !important;
+  font-family: 'Cairo', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease;
 }
 
 .btn-next:hover {
-  background-color: #2c4733; /* تغير اللون عند إشارة الماوس */
+  background-color: #2c4733 !important;
 }
 
-/* زر "إعادة الضبط" */
 .btn-reset {
-  flex: 1;
-  background-color: #f2f5f3;
-  color: #4a574e;
-  border: none;
-  padding: 14px;
-  border-radius: 14px;
-  font-family: 'Cairo', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
+  flex: 1 !important;
+  background-color: #f2f5f3 !important;
+  color: #4a574e !important;
+  border: none !important;
+  padding: 13px !important;
+  border-radius: 14px !important;
+  font-family: 'Cairo', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease;
 }
 
 .btn-reset:hover {
-  background-color: #e4ebe7;
+  background-color: #e4ebe7 !important;
 }
 
 /* =========================================================
-   7. شبكة الإحصائيات الأربعة (Stats Grid)
+   6. شبكة الإحصائيات الأربعة (Stats Grid)
    ========================================================= */
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 أعمدة متساوية الحجم */
-  gap: 15px;
-  width: 100%;
-  max-width: 700px;
-  background-color: #f9fbf9;
-  padding: 18px 12px;
-  border-radius: 20px;
-  border: 1px solid #eaeede;
-  box-sizing: border-box;
-}
-
-/* كل صندوق داخل شبكة الإحصائيات */
-.stat-box {
-  text-align: center;
-  display: flex;
-  flex-direction: column; /* يجعل العناصر متتالية رأسيًا: أيقونة -> رقم -> نص */
-  align-items: center;    /* محاذاة أفية في المنتصف */
-  justify-content: center;
-}
-
-/* الأيقونات داخل صناديق الإحصائيات */
-.stat-box i {
-  font-size: 20px;
-  color: #2d6a4f;
-  margin-bottom: 6px; /* مسافة بين الأيقونة والرقم */
-}
-
-/* القيمة الرقمية للإحصائية */
-.stat-value {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1f3324;
-}
-
-/* العنوان التوضيحي للإحصائية */
-.stat-label {
-  font-size: 16px;
-  color: #181b19;
-  margin-top: 4px;
-}
-
-/* =========================================================
-   8. شريط التنقل السفلي العائم (Floating Bottom Navigation)
-   ========================================================= */
-.bottom-nav {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%); /* توسيط الشريط أفقيًا */
-  width: 90%;
-  max-width: 450px;
-  background: rgba(255, 255, 255, 0.85); /* خلفية بيضاء شبه شفافة */
-  backdrop-filter: blur(12px);            /* تأثير التغبيش الزجاجي (Glassmorphism) */
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 24px;
-  display: flex;
-  justify-content: space-around; /* توزيع التبويبات بنسب متساوية */
-  align-items: center;
-  padding: 10px 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  z-index: 1000; /* ضمان بقائه فوق جميع العناصر */
-}
-
-/* تنسيق التبويب الواحدة داخل الشريط */
-.bottom-nav .nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #666;
-  font-size: 12px;
-  font-family: inherit;
-  transition: all 0.3s ease;
-  gap: 4px;
-}
-
-/* تنسيق حجم الأيقونة في التبويب */
-.bottom-nav .nav-icon {
-  width: 22px;
-  height: 22px;
-  transition: transform 0.3s ease;
-}
-
-/* تنسيق التبويب النشط (المحدد حالياً) */
-.bottom-nav .nav-item.active {
-  color: #1b4332;
-  font-weight: 600;
-}
-
-/* إعطاء حركة ارتفالية بسيطة للأيقونة النشطة */
-.bottom-nav .nav-item.active .nav-icon {
-  transform: translateY(-2px);
-}
-
-.bottom-nav .nav-item:hover {
-  color: #2d6a4f;
-}
-
-/* =========================================================
-   9. التجاوب مع الهواتف المحمولة (Responsive Design)
-   ========================================================= */
-@media (max-width: 768px) {
-  body {
-    background: #ffffff;
-    align-items: stretch;
-  }
-
-  /* جعل الحاوية تتكيف لتملأ كامل شاشة الهاتف */
-  .container {
-    width: 100%;
-    max-width: 100%;
-    min-height: 100vh;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 16px;
-  }
-
-  /* تصغير أبعاد الدائرة لتبدو متناسبة مع شاشة الهاتف */
-  .counter-circle-container {
-    width: 200px;
-    height: 200px;
-  }
-  
-  .progress-ring {
-    width: 200px;
-    height: 200px;
-  }
-
-  /* تعديل مقاسات الـ SVG لتصغير العداد في الهاتف */
-  .progress-ring__circle-bg,
-  .progress-ring__circle {
-    cx: 100;
-    cy: 100;
-    r: 85; /* نصف قطر أصغر */
-  }
-
-  /* تعديل محيط الدائرة الأصغر (2 * π * 85 ≈ 534) */
-  .progress-ring__circle {
-    stroke-dasharray: 534 !important;
-  }
-
-  /* تصغير حجم خط العداد */
-  #currentCount {
-    font-size: 42px;
-  }
-}
-/* تطبيق الخلفية على الصفحة بالكامل (الجدارية) */
-body {
-  background-image: url('rrr.jpg'); /* اسم الصورة التي حفظتها */
-  background-size: cover ;          /* لكي تغطي الصورة كامل الشاشة بشكل متناسق */
-  background-position: center ;     /* تمركز الصورة في المنتصف */
-  background-repeat: no-repeat;    /* عدم تكرار الصورة */
-  background-attachment: fixed;    /* تثبيت الخلفية عند التمرير لتبدو أنيقة وعميقة */
-}
-
-
-
-.stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  margin: 15px auto !important;
+  background-color: #f9fbf9 !important;
+  padding: 14px 10px !important;
+  border-radius: 20px !important;
+  border: 1px solid #eaeede !important;
+  box-sizing: border-box !important;
   background-image: url('ss.jpg');
-  background-size: 300px;
-  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
-  opacity: 0.8; /* درجة الشفافية لتظهر هادئة داخل البطاقة */
- 
-
-  /* يمكنك إضافة لون شفاف أو تدرج فوقها إذا أردت وضوح النص أكثر */
-}/* تنسيق البطاقة الأساسية لتكون حاوية مرتبة */
-.card {
-  position: relative;
-  width: 100%;
-  max-width: 450px; /* أو العرض الذي تستخدمه حالياً */
-  background-color: #f4f1ea; /* اللون البيج الهادئ الذي اخترناه سابقاً */
-  border-radius: 20px;       /* زوايا دائرية للبطاقة */
-  overflow: hidden;         /* لكي لا تخرج الصورة عن حدود زوايا البطاقة */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  margin: 20px auto;
 }
 
-/* 
-
-
-  
-  /* تنسيق الكتابة العلوية في رأس البطاقة */
-.card-header-title {
-  width: 100%;
-  padding:5px 0;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #1f3325; /* لون أخضر داكن متناسق مع التصميم */
-  background-color: rgba(31, 51, 37, 0.05); /* خلفية خفيفة وناعمة للنص */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08); /* خط فاصل بسيط أسفل العنوان */
-  margin-bottom: 15px;
+.stat-box {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-
-/* 1. ضبط الحاوية البيضاء للبطاقة */
-/* 1. البطاقة الرئيسية - تضمن حصر الخلفية داخل حدودها بالكامل */
-.container {
-  position: relative !important;
-  overflow: hidden !important;
-  border-radius: 20px;
-  background-color: #55716205; /* لون خلفية أمان */
-  z-index: 1;
+.stat-box i {
+  font-size: 18px !important;
+  color: #2d6a4f !important;
+  margin-bottom: 4px !important;
 }
 
-/* 2. طبقة الخلفية الشفافة الممتدة 100% في جميع الجهات */
-.container::before {
-  content: "";
+.stat-value {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #1f3324 !important;
+}
+
+.stat-label {
+  font-size: 13px !important;
+  color: #181b19 !important;
+  margin-top: 2px !important;
+}
+
+/* =========================================================
+   7. شريط التنقل والأدوات العلوية والقائمة الجانبية
+   ========================================================= */
+.top-left-tools {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  
-  background-image: url('kurse.jpg') !important;
-  background-size: 100% 100% !important; /* تجبر الصورة على التمدد الكامل لأطراف البطاقة */
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  
-  opacity: 0.1; /* درجة الشفافية لتظهر هادئة داخل البطاقة */
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* 3. إبراز النصوص والأزرار فوق الصورة الشفافة */
-.container > * {
-  position: relative;
-  z-index: 2;
-}
-/* زر الثلاث شرطات في الزاوية اليسرى */
-.menu-btn {
-  position: absolute;
-  top: 10px;
+  top: 20px;
   left: 20px;
-  width: 30px;
-  height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.top-left-tools .menu-btn {
+  position: relative;
+  width: 26px;
+  height: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  z-index: 1000;
 }
 
-.menu-btn span {
+.top-left-tools .menu-btn span {
   display: block;
   height: 3px;
   width: 100%;
   background-color: #1f3325;
   border-radius: 3px;
-  transition: all 0.3s ease;
 }
 
-/* القائمة الجانبية المخفية افتراضياً */
+.share-btn {
+  font-size: 20px;
+  color: #1f3325;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.share-btn:hover {
+  transform: scale(1.1);
+}
+
 .side-menu {
   position: absolute;
   top: 60px;
@@ -501,20 +355,18 @@ body {
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
-  display: none; /* مخفية حتى يتم النقر عليها */
+  display: none;
   z-index: 999;
 }
 
-/* تفعيل ظهور القائمة */
 .side-menu.active {
   display: block;
 }
 
-/* تنسيق روابط أو تبويبات القائمة */
 .side-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .side-menu ul li a {
@@ -523,14 +375,8 @@ body {
   color: #1f3325;
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.2s ease;
 }
 
-.side-menu ul li a:hover {
-  background-color: rgba(31, 51, 37, 0.08);
-
-}
-  
 .dhikr-info-counter {
   text-align: center;
   margin: 10px 0;
@@ -538,7 +384,6 @@ body {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(4px);
 }
 
 #dhikrNameLabel {
@@ -558,131 +403,26 @@ body {
   color: #095714;
   font-size: 1.1rem;
 }
-/* الحاوية العلوية اليسرى لأزرار التحكم */
-.top-left-tools {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px; /* المسافة بين زر المشاركة وزر القائمة */
-  z-index: 1000;
-}
 
-/* تعديل موقع زر القائمة ليتناسب مع الحاوية */
-.top-left-tools .menu-btn {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 26px;
-  height: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.top-left-tools .menu-btn span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  background-color: #1f3325;
-  border-radius: 3px;
-}
-
-/* تنسيق زر المشاركة الجديد */
-.share-btn {
-  font-size: 20px;
-  color: #1f3325;
-  cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.share-btn:hover {
-  color: #2d6a4f;
-  transform: scale(1.1); /* تأثير تكبير بسيط عند إشارة الماوس */
+/* إخفاء القوائم غير المرغوبة التي قد تظهر عشوائياً */
+ul:not(.side-menu ul) {
+  list-style: none !important;
+  padding: 0 !important;
 }
 
 /* =========================================================
-   إصلاح تنسيق الأزرار والإحصائيات وبطاقة الموقع
+   8. التجاوب مع الهواتف المحمولة (Responsive Design)
    ========================================================= */
+@media (max-width: 768px) {
+  body {
+    align-items: center;
+    background-attachment: scroll;
+  }
 
-/* 1. إصلاح القائمة والروابط الزرقاء لتختفي أو تظهر بشكل أنيق */
-ul {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 10px 0 !important;
-}
-
-/* 2. إعادة إظهار وتنسيق الأزرار (إعادة ضبط والذكر التالي) */
-.controls-row {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 10px !important;
-  width: 100% !important;
-  max-width: 350px !important;
-  margin: 15px auto !important;
-}
-
-.btn-next {
-  flex: 2 !important;
-  background-color: #1f3324 !important;
-  color: #ffffff !important;
-  border: none !important;
-  padding: 12px !important;
-  border-radius: 12px !important;
-  font-family: 'Cairo', sans-serif !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-}
-
-.btn-reset {
-  flex: 1 !important;
-  background-color: #f2f5f3 !important;
-  color: #4a574e !important;
-  border: none !important;
-  padding: 12px !important;
-  border-radius: 12px !important;
-  font-family: 'Cairo', sans-serif !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-}
-
-/* 3. إعادة تنسيق شبكة الإحصائيات في الأسفل أفقياً */
-.stats-grid {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 8px !important;
-  width: 100% !important;
-  max-width: 380px !important;
-  margin: 15px auto !important;
-  background-color: #f9fbf9 !important;
-  padding: 12px 8px !important;
-  border-radius: 16px !important;
-  border: 1px solid #eaeede !important;
-  box-sizing: border-box !important;
-}
-
-.stat-box {
-  text-align: center !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.stat-value {
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  color: #1f3324 !important;
-}
-
-.stat-label {
-  font-size: 12px !important;
-  color: #181b19 !important;
-}
+  .container {
+    width: 92% !important;
+    max-width: 400px !important;
+    min-height: auto !important;
+    margin: 15px auto !important;
+    padding: 20px 14px !important;
+    border-radius:
