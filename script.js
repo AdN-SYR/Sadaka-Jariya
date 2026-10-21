@@ -1,3 +1,6 @@
+// =========================================================
+// 1. مفاتيح الربط الخاصة بك في Supabase
+// =========================================================
 const SUPABASE_URL = 'https://dhptwlwchbqyeayczitm.supabase.co'; 
 const SUPABASE_ANON_KEY = 'sb_publishable_zoi9hXqIvG9bBPMyd37Vig_UjCKvu1F'; 
 
@@ -11,7 +14,7 @@ try {
 }
 
 // =========================================================
-// 2. مصفوفة الأذكار الأساسية
+// 2. مصفوفة الأذكار الأساسية (بنفس الصياغة النصية الدقيقة)
 // =========================================================
 const azkar = [
   { name: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ", target: 25 },
@@ -29,36 +32,8 @@ let currentCount = 0;
 let pendingBatchCount = 0;
 let batchTimer = null;
 
-// --- [إضافة معدّلة]: قراءة وتصفير عدادات اليوم والأسبوع بناءً على التاريخ ---
-function getSafeNumber(key) {
-  const val = parseInt(localStorage.getItem(key), 10);
-  return isNaN(val) || val < 0 ? 0 : val;
-}
-
-function checkAndResetDateStats() {
-  const todayDate = new Date().toDateString();
-  const now = new Date();
-  const firstDayOfWeek = new Date(now.setDate(now.getDate() - now.getDay())).toDateString();
-
-  const lastSavedDate = localStorage.getItem('dhikr_last_date');
-  const lastSavedWeek = localStorage.getItem('dhikr_last_week');
-
-  if (lastSavedDate !== todayDate) {
-    localStorage.setItem('dhikr_today', '0');
-    localStorage.setItem('dhikr_last_date', todayDate);
-  }
-
-  if (lastSavedWeek !== firstDayOfWeek) {
-    localStorage.setItem('dhikr_week', '0');
-    localStorage.setItem('dhikr_last_week', firstDayOfWeek);
-  }
-}
-
-let todayCount = getSafeNumber('dhikr_today');
-let weekCount = getSafeNumber('dhikr_week');
-
 const tabData = {
-  1: { title: "فضل الذكر والدعاء", body: "عَنْ أَبِي الدَّرْدَاءِ رَضِيَ اللَّهُ عَنْهُ أَنَّ رَسُولَ اللَّهِ ﷺ قَالَ: إلَّا أُنَبِّئُكُمْ بِخَيْرِ أَعْمَالِكُمْ وَأَزْكَاهَا عِنْدَ مَلِيكِكُمْ، وَأَرْفَعِهَا فِي دَرَجَاتِكُمْ، وَخَيْرٍ لَكُمْ مِنْ إنْفَاقِ الذَّهَبِ وَالْوَرِقِ، وَخَيْرٍ لَكُمْ مِنْ أَنَّ تَلْقَوْا عَدُوَّكُمْ فَتَضْرِبُوا أَعْنَاقَهُمْ وَيَضْرِبُوا أَعْنَاقَكُمْ؟ قَالُوا: بَلَى، قَالَ: ذَكَرَ اللَّهُ تَعَالَى" },
+  1: { title: "فضل الذكر والدعاء", body: "عَنْ أَبِي الدَّرْدَاءِ رَضِيَ اللَّهُ عَنْهُ أَنَّ رَسُولَ اللَّهِ ﷺ قَالَ: إلَّا أُنَبِّئُكُمْ بِخَيْرِ أَعْمَالِكُمْ وَأَزْكَاهَا عِنْدَ مَلِيكِكُمْ، وَأَرْفَعِهَا فِي دَرَجَاتِكُمْ، وَخَيْرٍ لَكُمْ مِنْ إنْفَاقِ الذَّهَبِ وَالْوَرِقِ، وَخَيْرٍ لَكُمْ مِنْ أَنَّ تَلْقَوْا عَدُوَّكُمْ فَتَضْرِبُوا أَعْنَاقَهُمْ وَيَضْرِبُوا أَعْنَاقَكُمْ؟ قَالُوا: بَلَى، قَالَ: ذَكَرَ اللَّهُ تَعَالَى" },
   2: { title: "أوقات مستحبة للذكر", body: "دُبر الصلوات المكتوبة، وفي أذكار الصباح والمساء، وقبل النوم؛." },
   3: { title: "عن التطبيق", body: "صدقة جارية لروح المرحوم الشيخ جُنيد فارس نجار تغمده الله بواسع رحمته." },
   4: { title: "مشاركة الأجر", body: "قال النبي ﷺ: 'الدَّالُّ عَلَى الْخَيْرِ كَفَاعِلِهِ'. شارك التطبيق مع عائلتك وأصدقائك." }
@@ -134,13 +109,14 @@ async function registerVisitorSession() {
 }
 
 // =========================================================
-// 6. جلب الإحصائيات الموحدة من Supabase
+// 6. جلب الإحصائيات الموحدة من Supabase (تتضمن اليوم والأسبوع)
 // =========================================================
 async function fetchGlobalStats() {
   if (!db) return;
   const active = azkar[currentIndex];
 
   try {
+    // 1. إجمالي الذكر الحالي
     const { data: dhikrData } = await db
       .from('dhikr_counters')
       .select('current_count')
@@ -151,15 +127,32 @@ async function fetchGlobalStats() {
     const accumulatedEl = document.getElementById('dhikrAccumulatedTotal');
     if (accumulatedEl) accumulatedEl.innerText = accumulatedTotal.toLocaleString();
 
+    // 2. إجمالي التسابيح الكلي
     const { data: allAzkar } = await db.from('dhikr_counters').select('current_count');
     const totalGlobal = allAzkar ? allAzkar.reduce((sum, item) => sum + (item.current_count || 0), 0) : 0;
     
     const totalEl = document.getElementById('statTotal');
     if (totalEl) totalEl.innerText = totalGlobal.toLocaleString();
 
+    // 3. عدد الذاكرين
     const { count: usersCount } = await db.from('visitors_log').select('*', { count: 'exact', head: true });
     const usersEl = document.getElementById('statUsers');
     if (usersEl) usersEl.innerText = (usersCount || 0).toLocaleString();
+
+    // 4. إحصائيات اليوم والأسبوع الموحدة عالمياً
+    const { data: timeStats } = await db.from('global_stats').select('id, count');
+    if (timeStats) {
+      timeStats.forEach(stat => {
+        if (stat.id === 'today') {
+          const todayEl = document.getElementById('statToday');
+          if (todayEl) todayEl.innerText = Number(stat.count).toLocaleString();
+        }
+        if (stat.id === 'week') {
+          const weekEl = document.getElementById('statWeek');
+          if (weekEl) weekEl.innerText = Number(stat.count).toLocaleString();
+        }
+      });
+    }
 
   } catch (err) {
     console.warn('جاري استخدام الإحصائيات المحلية:', err);
@@ -174,13 +167,18 @@ async function flushDhikrBatch() {
 
   const countToSend = pendingBatchCount;
   pendingBatchCount = 0;
-
   const active = azkar[currentIndex];
 
   try {
+    // زيادة إجمالي الذكر الحالي
     await db.rpc('increment_dhikr', {
       d_name: active.name,
       increment_by: countToSend
+    });
+
+    // زيادة إحصائيات اليوم والأسبوع الموحدة
+    await db.rpc('increment_time_stats', {
+      inc_val: countToSend
     });
 
     fetchGlobalStats();
@@ -194,15 +192,9 @@ function increment() {
   const active = azkar[currentIndex];
 
   currentCount++;
-  todayCount++;
-  weekCount++;
   pendingBatchCount++;
 
-  // --- [إضافة معدّلة]: حفظ العدادات الشخصية لحظياً في localStorage ---
-  localStorage.setItem('dhikr_today', todayCount);
-  localStorage.setItem('dhikr_week', weekCount);
-
-  if (navigator.vibrate) navigator.vibrate(20);
+  if (navigator.vibrate) navigator.vibrate(8);
 
   updateUI();
 
@@ -221,7 +213,7 @@ function increment() {
 }
 
 // =========================================================
-// 8. التحكم والواجهة وقائمة الجوانب
+// 8. التحكم والواجهة ورسم الدائرة
 // =========================================================
 function updateUI() {
   const active = azkar[currentIndex];
@@ -232,24 +224,20 @@ function updateUI() {
   const nameLabel = document.getElementById('dhikrNameLabel');
   const circle = document.getElementById('progressCircle');
 
-  // --- [إضافة معدّلة]: ربط وعرض أرقام اليوم والأسبوع ---
-  const todayEl = document.getElementById('statToday');
-  const weekEl = document.getElementById('statWeek');
-
   if (currentEl) currentEl.innerText = currentCount;
   if (targetEl) targetEl.innerText = active.target;
   if (select) select.value = currentIndex;
   if (nameLabel) nameLabel.innerText = active.name;
 
-  if (todayEl) todayEl.innerText = todayCount.toLocaleString();
-  if (weekEl) weekEl.innerText = weekCount.toLocaleString();
-
+  // إصلاح رسم الدائرة بدقة عند الصفر
   if (circle) {
     const radius = 105;
     const circumference = 2 * Math.PI * radius;
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+
     const progress = Math.min(currentCount / active.target, 1);
-    const offset = circumference - progress * circumference;
-    circle.style.strokeDashoffset = offset >= 0 ? offset : 0;
+    const offset = circumference - (progress * circumference);
+    circle.style.strokeDashoffset = offset;
   }
 }
 
@@ -270,21 +258,52 @@ function nextDhikr() {
   forceNextDhikr();
 }
 
-// --- [تعديل]: تفعيل القائمة المنسدلة للتغيير المباشر دون تقييد ---
+// تقييد القائمة المنسدلة لمنع التغيير إلا بعد إكمال الهدف
 function changeDhikr() {
   const select = document.getElementById('dhikrSelect');
-  if (!select) return;
+  const active = azkar[currentIndex];
 
-  flushDhikrBatch();
-  currentIndex = parseInt(select.value, 10);
-  currentCount = 0;
-  updateUI();
-  fetchGlobalStats();
+  if (currentCount < active.target) {
+    alert(`يجب إكمال هذا الذكر أولاً قبل التغيير (${currentCount} / ${active.target}).`);
+    select.value = currentIndex;
+    return;
+  }
+
+  if (select) {
+    flushDhikrBatch();
+    currentIndex = parseInt(select.value, 10);
+    currentCount = 0;
+    updateUI();
+    fetchGlobalStats();
+  }
 }
 
 function resetCount() {
   currentCount = 0;
   updateUI();
+}
+
+// =========================================================
+// 9. المشاركة والنوافذ المنبثقة
+// =========================================================
+function shareApp(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  const shareData = {
+    title: 'تطبيق العداد الرقمي - صدقة جارية',
+    text: 'شاركونا الأجر في العداد الرقمي الموحد للأذكار (صدقة جارية لروح المرحوم الشيخ جُنيد فارس نجار):',
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData).catch(() => {});
+  } else {
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
+    window.open(whatsappUrl, '_blank');
+  }
 }
 
 function populateSelect() {
@@ -326,16 +345,12 @@ function closeTabModal() {
 }
 
 // =========================================================
-// 9. التهيئة المباشرة
+// 10. التهيئة المباشرة
 // =========================================================
 document.addEventListener('DOMContentLoaded', () => {
-  // --- [إضافة معدّلة]: فحص تواريخ اليوم والأسبوع قبل العرض ---
-  checkAndResetDateStats();
-
   populateSelect();
   updateUI();
 
-  // تفعيل فتح وإغلاق القائمة الجانبية بشكل آمن تماماً
   const menuBtn = document.getElementById('menuBtn');
   const sideMenu = document.getElementById('sideMenu');
 
@@ -352,13 +367,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // --- [إضافة معدّلة]: ربط عناصر القائمة الجانبية بنوافذ التبويبات تلقائياً ---
   const menuLinks = document.querySelectorAll('#sideMenu ul li a');
   menuLinks.forEach((link, idx) => {
     link.onclick = (e) => openTabModal(idx + 1, e);
   });
 
-  // تشغيل التسجيل والإحصائيات في الخلفية
   registerVisitorSession();
   fetchGlobalStats();
 
