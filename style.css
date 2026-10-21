@@ -426,3 +426,26 @@ ul:not(.side-menu ul) {
     margin: 15px auto !important;
     padding: 20px 14px !important;
     border-radius:
+
+       /* حل مشكلة طيران الرقم 25 فوق الدائرة */
+#targetCount, 
+.counter-content #targetCount,
+.counter-circle-container #targetCount {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin-bottom: 2px !important;
+}
+
+/* إعادة تجميد النصوص في مركز الدائرة هندسياً */
+.counter-content {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
