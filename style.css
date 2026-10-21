@@ -605,3 +605,84 @@ body {
   color: #2d6a4f;
   transform: scale(1.1); /* تأثير تكبير بسيط عند إشارة الماوس */
 }
+
+/* =========================================================
+   إصلاح تنسيق الأزرار والإحصائيات وبطاقة الموقع
+   ========================================================= */
+
+/* 1. إصلاح القائمة والروابط الزرقاء لتختفي أو تظهر بشكل أنيق */
+ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 10px 0 !important;
+}
+
+/* 2. إعادة إظهار وتنسيق الأزرار (إعادة ضبط والذكر التالي) */
+.controls-row {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 350px !important;
+  margin: 15px auto !important;
+}
+
+.btn-next {
+  flex: 2 !important;
+  background-color: #1f3324 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  font-family: 'Cairo', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+.btn-reset {
+  flex: 1 !important;
+  background-color: #f2f5f3 !important;
+  color: #4a574e !important;
+  border: none !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  font-family: 'Cairo', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+/* 3. إعادة تنسيق شبكة الإحصائيات في الأسفل أفقياً */
+.stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  margin: 15px auto !important;
+  background-color: #f9fbf9 !important;
+  padding: 12px 8px !important;
+  border-radius: 16px !important;
+  border: 1px solid #eaeede !important;
+  box-sizing: border-box !important;
+}
+
+.stat-box {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.stat-value {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #1f3324 !important;
+}
+
+.stat-label {
+  font-size: 12px !important;
+  color: #181b19 !important;
+}
