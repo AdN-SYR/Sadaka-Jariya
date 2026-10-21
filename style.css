@@ -83,26 +83,24 @@ body {
 }
 
 /* =========================================================
-   4. دائرة العداد وحلقة التقدم (SVG Counter Ring)
+   كود الدائرة الكامل (جميع العناصر)
    ========================================================= */
-/* تكبير دائرة العد لتتناسب مع الشاشات العريضة */
+
+/* 1. الحاوية الرئيسية للدائرة */
 .counter-circle-container {
   position: relative !important;
   width: 240px;
   height: 240px;
   margin: 20px auto;
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  
-
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  
-  user-select: none; /* منع تحديد النص عند النقر المتكرر */
-  -webkit-tap-highlight-color: transparent; /* إزالة لون التحديد الأزرق عند اللمس في الهواتف */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* تنسيق الدائرة الرئيسي لجميع الشاشات - تدوير الدائرة لتبدأ الحركة من الأعلى */
+/* 2. ضبط رسمة الـ SVG وتدويرها لتبدأ التعبئة من الأعلى */
 .progress-ring {
   transform: rotate(-90deg) !important;
   transform-origin: center !important;
@@ -110,26 +108,25 @@ body {
   height: 240px;
 }
 
-
-/* تعديل حجم وإحداثيات دائرة SVG */
-.progress-ring__circle-bg,
-.progress-ring__circle {
-  cx: 120; /* مركز X */
-  cy: 120; /* مركز Y */
-  r: 105; /* نصف القطر */
+/* 3. دائرة الخلفية الرمادية */
+.progress-ring__circle-bg {
+  stroke: #e6ede8;
+  stroke-width: 8;
+  fill: transparent;
 }
 
-/* تخصيص حركة شريط التقدم */
+/* 4. دائرة التقدم الخضراء */
 .progress-ring__circle {
-  stroke-dasharray: 659 !important; /* محيط الدائرة (2 * π * r) حيث r=105 */
-  transition: stroke-dashoffset 0.35s ease; /* انسيابية عند حركة شريط التقدم */
-  stroke-linecap: round; /* إعطاء أطراف شريط التقدم شكلاً دائرياً */
+  stroke: #1f3324;
+  stroke-width: 8;
+  fill: transparent;
+  stroke-dasharray: 659 !important; /* محيط الدائرة (2 * π * 105) */
+  transition: stroke-dashoffset 0.35s ease;
+  stroke-linecap: round;
 }
 
-/* =========================================================
-   5. النصوص المتواجدة داخل دائرة العداد
-   ========================================================= */
-.counter-content {
+/* 5. الحاوية النصية في منتصف الدائرة (سنترة وترتيب عمودي) */
+.counter-circle-container .counter-content {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
@@ -138,42 +135,49 @@ body {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  width: auto  !important;
+  text-align: center !important;
+  direction: ltr !important; /* لمنع الانزياح الأفقي للأرقام */
+  width: 100% !important;
   height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
   pointer-events: none;
 }
 
-
-
-/* الفاصل بين الرقم الحالي والمستهدف */
-.counter-content .divider {
-  font-size: 0.9rem !important;
-  color: #a0a8a3  !important;
- 
+/* 6. إلغاء التموضع الجانبي لكل عنصر داخل الدائرة */
+.counter-circle-container .counter-content * {
+  position: static !important;
+  display: block !important;
+  margin: 0 !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
 }
 
-/* الرقم المستهدف الوصول إليه */
+/* 7. أحجام وخطوط العناصر داخل الدائرة */
 #targetCount {
- font-size: 1.2rem !important;
+  font-size: 1.2rem !important;
   color: #707a73 !important;
   font-weight: 500 !important;
 }
+
+.counter-circle-container .counter-content .divider {
+  font-size: 0.9rem !important;
+  color: #a0a8a3 !important;
+  margin: -2px 0 !important;
 }
 
-/* الرقم الحالي للعداد */
 #currentCount {
-  font-size: 2.2rem !important;
+  font-size: 2.6rem !important;
   font-weight: bold !important;
   color: #095714 !important;
+  margin: 2px 0 !important;
 }
-}
-/* التسمية التوضيحية الصغيرة تحت العداد */
+
 .label-small {
-  font-size: 0.8rem !important;
-  color: #909893;
-  
+  font-size: 0.85rem !important;
+  color: #909893 !important;
+  direction: rtl !important; /* لإظهار النص بالعربية الصحيحة */
+}
 
 /* =========================================================
    6. أزرار التحكم (Next & Reset Buttons)
