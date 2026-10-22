@@ -1,381 +1,659 @@
 // =========================================================
-// 1. مفاتيح الربط الخاصة بك في Supabase
+
+// 1. الاتصال بـ Supabase (مفتاح anon/publishable فقط)
+
 // =========================================================
-const SUPABASE_URL = 'https://dhptwlwchbqyeayczitm.supabase.co'; 
-const SUPABASE_ANON_KEY = 'sb_publishable_zoi9hXqIvG9bBPMyd37Vig_UjCKvu1F'; 
+
+const SUPABASE_URL = 'https://dhptwlwchbqyeayczitm.supabase.co';
+
+const SUPABASE_ANON_KEY = 'sb_publishable_zoi9hXqIvG9bBPMyd37Vig_UjCKvu1F';
+
+
 
 let db = null;
+
 try {
-  if (typeof supabase !== 'undefined' && SUPABASE_ANON_KEY) {
-    db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-} catch (e) {
-  console.warn("تعذر تهيئة Supabase، يعمل التطبيق محلياً الآن:", e);
+
+if (typeof supabase !== 'undefined') {
+
+db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 }
 
+} catch (e) {
+
+console.warn('تعذر تهيئة Supabase، يعمل التطبيق محلياً:', e);
+
+}
+
+
+
 // =========================================================
-// 2. مصفوفة الأذكار الأساسية (بنفس الصياغة النصية الدقيقة)
+
+// 2. الأذكار (الأسماء يجب أن تطابق dhikr_name في الجدول حرفياً)
+
 // =========================================================
+
 const azkar = [
-  { name: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ", target: 25 },
-  { name: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ", target: 25 },
-  { name: "اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى نَبِيِّينَا مُحَمَّد", target: 25 },
-  { name: "سُبْحَانَ اللَّهِ", target: 25 },
-  { name: "الْحَمْدُ لِلَّهِ", target: 25 },
-  { name: "لَا إلَهَ إلَّا اللَّهُ", target: 25 },
-  { name: "اللَّهُ أَكْبَرُ", target: 25 },
-  { name: "لَا حَوْلَ وَلَا قُوَّةَ إلَّا بِاَللَّهِ", target: 25 }
+
+{ name: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ", target: 25 },
+
+{ name: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ", target: 25 },
+
+{ name: "اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى نَبِيِّينَا مُحَمَّد", target: 25 },
+
+{ name: "سُبْحَانَ اللَّهِ", target: 25 },
+
+{ name: "الْحَمْدُ لِلَّهِ", target: 25 },
+
+{ name: "لَا إلَهَ إلَّا اللَّهُ", target: 25 },
+
+{ name: "اللَّهُ أَكْبَرُ", target: 25 },
+
+{ name: "لَا حَوْلَ وَلَا قُوَّةَ إلَّا بِاَللَّهِ", target: 25 }
+
 ];
 
-let currentIndex = 0;
-let currentCount = 0;
-let pendingBatchCount = 0;
-let batchTimer = null;
+
 
 const tabData = {
-  1: { title: "فضل الذكر والدعاء", body: "عَنْ أَبِي الدَّرْدَاءِ رَضِيَ اللَّهُ عَنْهُ أَنَّ رَسُولَ اللَّهِ ﷺ قَالَ: إلَّا أُنَبِّئُكُمْ بِخَيْرِ أَعْمَالِكُمْ وَأَزْكَاهَا عِنْدَ مَلِيكِكُمْ، وَأَرْفَعِهَا فِي دَرَجَاتِكُمْ، وَخَيْرٍ لَكُمْ مِنْ إنْفَاقِ الذَّهَبِ وَالْوَرِقِ، وَخَيْرٍ لَكُمْ مِنْ أَنَّ تَلْقَوْا عَدُوَّكُمْ فَتَضْرِبُوا أَعْنَاقَهُمْ وَيَضْرِبُوا أَعْنَاقَكُمْ؟ قَالُوا: بَلَى، قَالَ: ذَكَرَ اللَّهُ تَعَالَى" },
-  2: { title: "أوقات مستحبة للذكر", body: "دُبر الصلوات المكتوبة، وفي أذكار الصباح والمساء، وقبل النوم؛." },
-  3: { title: "عن التطبيق", body: "صدقة جارية لروح المرحوم الشيخ جُنيد فارس نجار تغمده الله بواسع رحمته." },
-  4: { title: "مشاركة الأجر", body: "قال النبي ﷺ: 'الدَّالُّ عَلَى الْخَيْرِ كَفَاعِلِهِ'. شارك التطبيق مع عائلتك وأصدقائك." }
+
+1: { title: "فضل الذكر والدعاء", body: "عَنْ أَبِي الدَّرْدَاءِ رَضِيَ اللَّهُ عَنْهُ أَنَّ رَسُولَ اللَّهِ ﷺ قَالَ: إلَّا أُنَبِّئُكُمْ بِخَيْرِ أَعْمَالِكُمْ وَأَزْكَاهَا عِنْدَ مَلِيكِكُمْ، وَأَرْفَعِهَا فِي دَرَجَاتِكُمْ، وَخَيْرٍ لَكُمْ مِنْ إنْفَاقِ الذَّهَبِ وَالْوَرِقِ، وَخَيْرٍ لَكُمْ مِنْ أَنَّ تَلْقَوْا عَدُوَّكُمْ فَتَضْرِبُوا أَعْنَاقَهُمْ وَيَضْرِبُوا أَعْنَاقَكُمْ؟ قَالُوا: بَلَى، قَالَ: ذَكَرَ اللَّهُ تَعَالَى" },
+
+2: { title: "أوقات مستحبة للذكر", body: "دُبر الصلوات المكتوبة، وفي أذكار الصباح والمساء، وقبل النوم." },
+
+3: { title: "عن التطبيق", body: "صدقة جارية لروح المرحوم الشيخ جُنيد فارس نجار تغمده الله بواسع رحمته." },
+
+4: { title: "مشاركة الأجر", body: "قال النبي ﷺ: 'الدَّالُّ عَلَى الْخَيْرِ كَفَاعِلِهِ'. شارك التطبيق مع عائلتك وأصدقائك." }
+
 };
 
+
+
+const PUSH_INTERVAL_MS = 5500; // أكبر من حد السيرفر (5 ثوانٍ)
+
+const MAX_BATCH = 20; // نفس حد السيرفر
+
+
+
+let currentIndex = 0;
+
+let currentCount = 0;
+
+let pending = {}; // { اسم_الذكر: عدد غير مرفوع }
+
+let registered = false;
+
+let batchTimer = null;
+
+let flushing = false;
+
+let lastStats = null;
+
+
+
 // =========================================================
-// 3. بصمة الجهاز الفريدة (Device Fingerprinting)
+
+// 3. الدخول المجهول (الهوية يصدرها Supabase لا المتصفح)
+
 // =========================================================
-async function generateDeviceFingerprint() {
-  let deviceId = localStorage.getItem('dhikr_device_id');
-  if (deviceId) return deviceId;
 
-  const rawComponents = [
-    navigator.userAgent,
-    navigator.language,
-    screen.colorDepth,
-    `${screen.width}x${screen.height}`,
-    new Date().getTimezoneOffset()
-  ].join('||');
+let authPromise = null;
 
-  try {
-    const msgUint8 = new TextEncoder().encode(rawComponents);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    deviceId = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  } catch (e) {
-    deviceId = 'dev_' + Math.random().toString(36).substring(2);
-  }
+function ensureAuth() {
 
-  localStorage.setItem('dhikr_device_id', deviceId);
-  return deviceId;
+if (!db) return Promise.resolve(false);
+
+if (authPromise) return authPromise;
+
+authPromise = (async () => {
+
+try {
+
+const { data: { session } } = await db.auth.getSession();
+
+if (session) return true;
+
+const { error } = await db.auth.signInAnonymously();
+
+return !error;
+
+} catch (e) {
+
+return false;
+
 }
 
+})();
+
+authPromise.then(ok => { if (!ok) authPromise = null; });
+
+return authPromise;
+
+}
+
+
+
 // =========================================================
-// 4. تحديد دولة الزائر مع التخزين المحلي (Caching)
+
+// 4. دولة الزائر (تُجلب مرة واحدة فقط عند أول تسبيحة)
+
 // =========================================================
+
 async function getVisitorCountry() {
-  const cachedCountry = localStorage.getItem('dhikr_user_country');
-  if (cachedCountry) return cachedCountry;
 
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    const data = await response.json();
-    const country = data.country_name || 'غير معروف';
-    localStorage.setItem('dhikr_user_country', country);
-    return country;
-  } catch (error) {
-    return 'غير معروف';
-  }
+const cached = localStorage.getItem('dhikr_user_country');
+
+if (cached) return cached;
+
+try {
+
+const ctrl = new AbortController();
+
+const t = setTimeout(() => ctrl.abort(), 4000);
+
+const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
+
+clearTimeout(t);
+
+const data = await res.json();
+
+const country = data.country_name || 'غير معروف';
+
+localStorage.setItem('dhikr_user_country', country);
+
+return country;
+
+} catch (e) {
+
+return 'غير معروف';
+
 }
 
-// =========================================================
-// 5. تسجيل حركة الزائر والجهاز في Supabase
-// =========================================================
-async function registerVisitorSession() {
-  if (!db) return;
-  const deviceId = await generateDeviceFingerprint();
-  const country = await getVisitorCountry();
-
-  if (!sessionStorage.getItem('session_registered')) {
-    try {
-      await db.from('visitors_log').upsert({
-        device_id: deviceId,
-        country: country,
-        last_visit: new Date()
-      }, { onConflict: 'device_id' });
-
-      sessionStorage.setItem('session_registered', 'true');
-    } catch (err) {
-      console.warn('تسجيل الزائر محلياً لعدم توفر الاتصال حالياً.');
-    }
-  }
 }
 
+
+
 // =========================================================
-// 6. جلب الإحصائيات الموحدة من Supabase (تتضمن اليوم والأسبوع)
+
+// 5. الإحصاءات (طلب واحد)
+
 // =========================================================
+
+function setText(id, value) {
+
+const el = document.getElementById(id);
+
+if (el) el.innerText = Number(value || 0).toLocaleString();
+
+}
+
+
+
+function renderStats() {
+
+if (!lastStats) return;
+
+const active = azkar[currentIndex];
+
+const dhikrs = lastStats.dhikrs || {};
+
+setText('dhikrAccumulatedTotal', dhikrs[active.name] || 0);
+
+setText('statTotal', lastStats.total);
+
+setText('statUsers', lastStats.users);
+
+setText('statToday', lastStats.today);
+
+setText('statWeek', lastStats.week);
+
+}
+
+
+
 async function fetchGlobalStats() {
-  if (!db) return;
-  const active = azkar[currentIndex];
 
-  try {
-    // 1. إجمالي الذكر الحالي
-    const { data: dhikrData } = await db
-      .from('dhikr_counters')
-      .select('current_count')
-      .eq('dhikr_name', active.name)
-      .maybeSingle();
+if (!db) return;
 
-    const accumulatedTotal = dhikrData ? dhikrData.current_count : 0;
-    const accumulatedEl = document.getElementById('dhikrAccumulatedTotal');
-    if (accumulatedEl) accumulatedEl.innerText = accumulatedTotal.toLocaleString();
+try {
 
-    // 2. إجمالي التسابيح الكلي
-    const { data: allAzkar } = await db.from('dhikr_counters').select('current_count');
-    const totalGlobal = allAzkar ? allAzkar.reduce((sum, item) => sum + (item.current_count || 0), 0) : 0;
-    
-    const totalEl = document.getElementById('statTotal');
-    if (totalEl) totalEl.innerText = totalGlobal.toLocaleString();
+const { data, error } = await db.rpc('get_stats');
 
-    // 3. عدد الذاكرين
-    const { count: usersCount } = await db.from('visitors_log').select('*', { count: 'exact', head: true });
-    const usersEl = document.getElementById('statUsers');
-    if (usersEl) usersEl.innerText = (usersCount || 0).toLocaleString();
+if (error || !data) return;
 
-    // 4. إحصائيات اليوم والأسبوع الموحدة عالمياً
-    const { data: timeStats } = await db.from('global_stats').select('id, count');
-    if (timeStats) {
-      timeStats.forEach(stat => {
-        if (stat.id === 'today') {
-          const todayEl = document.getElementById('statToday');
-          if (todayEl) todayEl.innerText = Number(stat.count).toLocaleString();
-        }
-        if (stat.id === 'week') {
-          const weekEl = document.getElementById('statWeek');
-          if (weekEl) weekEl.innerText = Number(stat.count).toLocaleString();
-        }
-      });
-    }
+lastStats = data;
 
-  } catch (err) {
-    console.warn('جاري استخدام الإحصائيات المحلية:', err);
-  }
+renderStats();
+
+} catch (e) {
+
+console.warn('تعذر جلب الإحصاءات');
+
 }
 
+}
+
+
+
 // =========================================================
-// 7. تقنية الدفعات التجميعية للتسبيح (Batching)
+
+// 6. رفع التسبيحات على دفعات (لا تُخصم إلا بعد نجاح الرفع)
+
 // =========================================================
+
+function scheduleFlush(delay) {
+
+clearTimeout(batchTimer);
+
+batchTimer = setTimeout(flushDhikrBatch, delay);
+
+}
+
+
+
 async function flushDhikrBatch() {
-  if (pendingBatchCount <= 0 || !db) return;
 
-  const countToSend = pendingBatchCount;
-  pendingBatchCount = 0;
-  const active = azkar[currentIndex];
+if (!db || flushing) return;
 
-  try {
-    // زيادة إجمالي الذكر الحالي
-    await db.rpc('increment_dhikr', {
-      d_name: active.name,
-      increment_by: countToSend
-    });
+const names = Object.keys(pending).filter(n => pending[n] > 0);
 
-    // زيادة إحصائيات اليوم والأسبوع الموحدة
-    await db.rpc('increment_time_stats', {
-      inc_val: countToSend
-    });
+if (!names.length) return;
 
-    fetchGlobalStats();
-  } catch (err) {
-    console.warn('تعذر إرسال الدفعة، جاري الاحتفاظ بها محلياً:', err);
-    pendingBatchCount += countToSend;
-  }
+
+
+flushing = true;
+
+try {
+
+if (!(await ensureAuth())) { scheduleFlush(15000); return; }
+
+
+
+if (!registered) {
+
+const country = await getVisitorCountry();
+
+const { error } = await db.rpc('register_dhikr_user', { p_country: country });
+
+if (!error) registered = true;
+
 }
+
+
+
+// رفعة واحدة لذكر واحد في كل مرة (حد الـ 5 ثوانٍ)
+
+const name = names[0];
+
+const batch = Math.min(pending[name], MAX_BATCH);
+
+const { error } = await db.rpc('add_dhikr', { p_name: name, p_amount: batch });
+
+
+
+if (!error) {
+
+pending[name] -= batch;
+
+fetchGlobalStats();
+
+} else if (String(error.message).includes('unknown dhikr')) {
+
+console.warn('اسم الذكر غير موجود في الجدول:', name);
+
+delete pending[name]; // لا نعيد المحاولة للأبد
+
+}
+
+// أي خطأ آخر (مثل too fast): يبقى pending كما هو وتُعاد المحاولة
+
+} catch (e) {
+
+console.warn('تعذر الرفع، ستُعاد المحاولة');
+
+} finally {
+
+flushing = false;
+
+if (Object.values(pending).some(v => v > 0)) scheduleFlush(PUSH_INTERVAL_MS);
+
+}
+
+}
+
+
+
+// =========================================================
+
+// 7. العدّ
+
+// =========================================================
 
 function increment() {
-  const active = azkar[currentIndex];
 
-  currentCount++;
-  pendingBatchCount++;
+const active = azkar[currentIndex];
 
-  if (navigator.vibrate) navigator.vibrate(8);
 
-  updateUI();
 
-  if (pendingBatchCount >= 20) {
-    if (batchTimer) clearTimeout(batchTimer);
-    flushDhikrBatch();
-  } else {
-    if (batchTimer) clearTimeout(batchTimer);
-    batchTimer = setTimeout(flushDhikrBatch, 5000);
-  }
+currentCount++;
 
-  if (currentCount >= active.target) {
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-    setTimeout(forceNextDhikr, 400);
-  }
+pending[active.name] = (pending[active.name] || 0) + 1; // الذكر يُثبَّت وقت التسبيح
+
+
+
+if (navigator.vibrate) navigator.vibrate(8);
+
+updateUI();
+
+scheduleFlush(PUSH_INTERVAL_MS);
+
+
+
+if (currentCount >= active.target) {
+
+if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+setTimeout(forceNextDhikr, 400);
+
 }
 
+}
+
+
+
 // =========================================================
-// 8. التحكم والواجهة ورسم الدائرة
+
+// 8. الواجهة ورسم الدائرة
+
 // =========================================================
+
 function updateUI() {
-  const active = azkar[currentIndex];
 
-  const currentEl = document.getElementById('currentCount');
-  const targetEl = document.getElementById('targetCount');
-  const select = document.getElementById('dhikrSelect');
-  const nameLabel = document.getElementById('dhikrNameLabel');
-  const circle = document.getElementById('progressCircle');
+const active = azkar[currentIndex];
 
-  if (currentEl) currentEl.innerText = currentCount;
-  if (targetEl) targetEl.innerText = active.target;
-  if (select) select.value = currentIndex;
-  if (nameLabel) nameLabel.innerText = active.name;
 
-  // إصلاح رسم الدائرة بدقة عند الصفر
-  if (circle) {
-    const radius = 105;
-    const circumference = 2 * Math.PI * radius;
-    circle.style.strokeDasharray = `${circumference} ${circumference}`;
 
-    const progress = Math.min(currentCount / active.target, 1);
-    const offset = circumference - (progress * circumference);
-    circle.style.strokeDashoffset = offset;
-  }
+const currentEl = document.getElementById('currentCount');
+
+const targetEl = document.getElementById('targetCount');
+
+const select = document.getElementById('dhikrSelect');
+
+const nameLabel = document.getElementById('dhikrNameLabel');
+
+const circle = document.getElementById('progressCircle');
+
+
+
+if (currentEl) currentEl.innerText = currentCount;
+
+if (targetEl) targetEl.innerText = active.target;
+
+if (select) select.value = currentIndex;
+
+if (nameLabel) nameLabel.innerText = active.name;
+
+
+
+if (circle) {
+
+const circumference = 2 * Math.PI * 105;
+
+circle.style.strokeDasharray = `${circumference} ${circumference}`;
+
+const progress = Math.min(currentCount / active.target, 1);
+
+circle.style.strokeDashoffset = circumference - progress * circumference;
+
 }
+
+renderStats();
+
+}
+
+
 
 function forceNextDhikr() {
-  flushDhikrBatch();
-  currentIndex = (currentIndex + 1) % azkar.length;
-  currentCount = 0;
-  updateUI();
-  fetchGlobalStats();
+
+currentIndex = (currentIndex + 1) % azkar.length;
+
+currentCount = 0;
+
+updateUI();
+
 }
+
+
 
 function nextDhikr() {
-  const active = azkar[currentIndex];
-  if (currentCount < active.target) {
-    alert(`عذراً، يجب إكمال هدف هذا الذكر أولاً (${currentCount} / ${active.target}) قبل الانتقال للذكر التالي.`);
-    return;
-  }
-  forceNextDhikr();
+
+const active = azkar[currentIndex];
+
+if (currentCount < active.target) {
+
+alert(`عذراً، يجب إكمال هدف هذا الذكر أولاً (${currentCount} / ${active.target}) قبل الانتقال للذكر التالي.`);
+
+return;
+
 }
 
-// تقييد القائمة المنسدلة لمنع التغيير إلا بعد إكمال الهدف
+forceNextDhikr();
+
+}
+
+
+
 function changeDhikr() {
-  const select = document.getElementById('dhikrSelect');
-  const active = azkar[currentIndex];
 
-  if (currentCount < active.target) {
-    alert(`يجب إكمال هذا الذكر أولاً قبل التغيير (${currentCount} / ${active.target}).`);
-    select.value = currentIndex;
-    return;
-  }
+const select = document.getElementById('dhikrSelect');
 
-  if (select) {
-    flushDhikrBatch();
-    currentIndex = parseInt(select.value, 10);
-    currentCount = 0;
-    updateUI();
-    fetchGlobalStats();
-  }
+const active = azkar[currentIndex];
+
+
+
+if (currentCount < active.target) {
+
+alert(`يجب إكمال هذا الذكر أولاً قبل التغيير (${currentCount} / ${active.target}).`);
+
+select.value = currentIndex;
+
+return;
+
 }
+
+currentIndex = parseInt(select.value, 10);
+
+currentCount = 0;
+
+updateUI();
+
+}
+
+
 
 function resetCount() {
-  currentCount = 0;
-  updateUI();
+
+currentCount = 0; // لا يمس ما سُبّح فعلاً ولم يُرفع بعد
+
+updateUI();
+
 }
 
+
+
 // =========================================================
+
 // 9. المشاركة والنوافذ المنبثقة
+
 // =========================================================
+
 function shareApp(e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
 
-  const shareData = {
-    title: 'تطبيق العداد الرقمي - صدقة جارية',
-    text: 'شاركونا الأجر في العداد الرقمي الموحد للأذكار (صدقة جارية لروح المرحوم الشيخ جُنيد فارس نجار):',
-    url: window.location.href
-  };
+if (e) { e.preventDefault(); e.stopPropagation(); }
 
-  if (navigator.share) {
-    navigator.share(shareData).catch(() => {});
-  } else {
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-    window.open(whatsappUrl, '_blank');
-  }
+
+
+const shareData = {
+
+title: 'تطبيق العداد الرقمي - صدقة جارية',
+
+text: 'شاركونا الأجر في العداد الرقمي الموحد للأذكار (صدقة جارية لروح المرحوم الشيخ جُنيد فارس نجار):',
+
+url: window.location.href
+
+};
+
+
+
+if (navigator.share) {
+
+navigator.share(shareData).catch(() => {});
+
+} else {
+
+const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
+
+window.open(url, '_blank');
+
 }
+
+}
+
+
 
 function populateSelect() {
-  const select = document.getElementById('dhikrSelect');
-  if (!select) return;
-  select.innerHTML = '';
-  azkar.forEach((item, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = item.name;
-    select.appendChild(option);
-  });
-  select.value = currentIndex;
+
+const select = document.getElementById('dhikrSelect');
+
+if (!select) return;
+
+select.innerHTML = '';
+
+azkar.forEach((item, index) => {
+
+const option = document.createElement('option');
+
+option.value = index;
+
+option.textContent = item.name;
+
+select.appendChild(option);
+
+});
+
+select.value = currentIndex;
+
 }
+
+
 
 function openTabModal(tabIndex, e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
 
-  const modal = document.getElementById('tabModal');
-  const title = document.getElementById('tabModalTitle');
-  const body = document.getElementById('tabModalBody');
-  const sideMenu = document.getElementById('sideMenu');
+if (e) { e.preventDefault(); e.stopPropagation(); }
 
-  if (tabData[tabIndex] && modal) {
-    title.innerText = tabData[tabIndex].title;
-    body.innerText = tabData[tabIndex].body;
-    modal.style.display = 'flex';
-  }
 
-  if (sideMenu) sideMenu.classList.remove('active');
+
+const modal = document.getElementById('tabModal');
+
+const title = document.getElementById('tabModalTitle');
+
+const body = document.getElementById('tabModalBody');
+
+const sideMenu = document.getElementById('sideMenu');
+
+
+
+if (tabData[tabIndex] && modal) {
+
+title.textContent = tabData[tabIndex].title;
+
+body.textContent = tabData[tabIndex].body;
+
+modal.style.display = 'flex';
+
 }
+
+if (sideMenu) sideMenu.classList.remove('active');
+
+}
+
+
 
 function closeTabModal() {
-  const modal = document.getElementById('tabModal');
-  if (modal) modal.style.display = 'none';
+
+const modal = document.getElementById('tabModal');
+
+if (modal) modal.style.display = 'none';
+
 }
 
+
+
 // =========================================================
-// 10. التهيئة المباشرة
+
+// 10. التهيئة
+
 // =========================================================
+
 document.addEventListener('DOMContentLoaded', () => {
-  populateSelect();
-  updateUI();
 
-  const menuBtn = document.getElementById('menuBtn');
-  const sideMenu = document.getElementById('sideMenu');
+populateSelect();
 
-  if (menuBtn && sideMenu) {
-    menuBtn.onclick = (e) => {
-      e.stopPropagation();
-      sideMenu.classList.toggle('active');
-    };
+updateUI();
 
-    document.onclick = (e) => {
-      if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-        sideMenu.classList.remove('active');
-      }
-    };
-  }
 
-  const menuLinks = document.querySelectorAll('#sideMenu ul li a');
-  menuLinks.forEach((link, idx) => {
-    link.onclick = (e) => openTabModal(idx + 1, e);
-  });
 
-  registerVisitorSession();
-  fetchGlobalStats();
+const menuBtn = document.getElementById('menuBtn');
 
-  window.addEventListener('beforeunload', () => {
-    flushDhikrBatch();
-  });
+const sideMenu = document.getElementById('sideMenu');
+
+if (menuBtn && sideMenu) {
+
+menuBtn.addEventListener('click', (e) => {
+
+e.stopPropagation();
+
+sideMenu.classList.toggle('active');
+
+});
+
+document.addEventListener('click', (e) => {
+
+if (!sideMenu.contains(e.target)) sideMenu.classList.remove('active');
+
+});
+
+}
+
+
+
+const modal = document.getElementById('tabModal');
+
+if (modal) {
+
+modal.addEventListener('click', (e) => { if (e.target === modal) closeTabModal(); });
+
+}
+
+
+
+fetchGlobalStats();
+
+setInterval(() => {
+
+if (document.visibilityState === 'visible') fetchGlobalStats();
+
+}, 30000);
+
+
+
+// أوثق من beforeunload على الجوال
+
+document.addEventListener('visibilitychange', () => {
+
+if (document.visibilityState === 'hidden') flushDhikrBatch();
+
+});
+
 });
