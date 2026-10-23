@@ -11,6 +11,10 @@
 
   <!-- ملف التنسيقات الخارجي -->
   <link rel="stylesheet" href="style.css">
+  <!-- son eklenen 1 -->
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quran.css">
+  
 </head>
 <body>
 
@@ -61,6 +65,7 @@
       <ul>
         <li><a href="javascript:void(0)" onclick="openTabModal(1, event)">فضل الذكر والدعاء</a></li>
         <li><a href="javascript:void(0)" onclick="openTabModal(2, event)">أوقات مستحبة للذكر</a></li>
+        <li><a href="javascript:void(0)" onclick="openQuran(event)">القرآن الكريم</a></li>
         <li><a href="javascript:void(0)" onclick="openTabModal(3, event)">عن التطبيق</a></li>
         <li><a href="javascript:void(0)" onclick="openTabModal(4, event)">مشاركة الأجر</a></li>
       </ul>
@@ -128,7 +133,7 @@
           <path d="M30 78 L29 84 M32 78 L32 85 M34 78 L35 84" stroke="#2d6a4f" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
         <span class="stat-value" id="statTotal">0</span>
-        <span class="stat-label">إجمالي الذكر</span>
+        <span class="stat-label">إجمالي الذِكر</span>
       </div>
 
       <!-- 2. الذاكرون -->
@@ -167,6 +172,6 @@
   <!-- مكتبة Supabase وملف الجافاسكريبت البرمجي -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
-
+<script src="quran.js"></script>
 </body>
 </html>
