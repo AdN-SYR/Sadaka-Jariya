@@ -299,7 +299,18 @@ if (Object.values(pending).some(v => v > 0)) scheduleFlush(PUSH_INTERVAL_MS);
 }
 
 }
-
+function showBlessing() {
+  let t = document.getElementById('blessingToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'blessingToast';
+    t.textContent = 'تقبّل الله منك وجعلها في ميزان حسناتك';
+    document.body.appendChild(t);
+  }
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), 3200);
+}
 
 
 
@@ -325,7 +336,8 @@ scheduleFlush(PUSH_INTERVAL_MS);
 
 
 if (currentCount >= active.target) {
-
+  
+showBlessing();
 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
 setTimeout(forceNextDhikr, 400);
