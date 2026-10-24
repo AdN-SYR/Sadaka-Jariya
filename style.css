@@ -423,3 +423,13 @@ ul:not(.side-menu ul) {
   stroke-dasharray: 659 !important;
 }
    }
+#blessingToast {
+  position: fixed; left: 50%; bottom: 40px; z-index: 9000;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  max-width: 88%; padding: 14px 22px; border-radius: 16px; text-align: center;
+  background: #1f3324; color: #f4f1ea;
+  font-family: 'Cairo', sans-serif; font-size: 17px; font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: opacity .35s ease, transform .35s ease;
+}
+#blessingToast.show { opacity: 1; transform: translate(-50%, 0); }
