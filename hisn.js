@@ -1,7 +1,4 @@
-// =========================================================
-// hisn.js — طبقة "حصن المسلم" داخل نفس الصفحة
-// ملف واحد فيه: النص + التنسيق + المنطق. لا يمس العدّاد ولا Supabase.
-// =========================================================
+
 (function () {
   'use strict';
 
@@ -90,7 +87,7 @@ background-color:var(--hbar);color:var(--hbarfg);background-image:radial-gradien
     }
   }
 
-  // ---------- بناء الواجهة ----------
+  
   function build() {
     injectAssets();
     overlay = document.createElement('div');
